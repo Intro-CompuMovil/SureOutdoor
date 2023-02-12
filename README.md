@@ -1,4 +1,5 @@
-#SureOutdoor
+SureOutdoor
+
 Grupo Creati 
 
 Objetivo de la aplicación: el propósito principal de crear esta aplicación es ser una guía para el usuario para que se motive a hacer ejercicio, 
