@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SureOutdoor</string>
+    <string name="info_principal">¡Hola Pedro! Esta es la cantidad de pasos que llevas hoy...</string>
+    <string name="return_description">Vuelve</string>
+    <string name="setting_description">Config</string>
+    <string name="paso_comp">6507 pasos completados</string>
+    <string name="text_dem">Te faltan 3493 para completar tu meta, ¡vamos que sí se puede!</string>
+    <string name="curious">Dato curioso: has completado 32 viajes ida y vuelta a la luna, ya eres todo un astronauta</string>
+    <string name="icon">iconoX</string>
+    <string name="homeIcon">Inicio</string>
+    <string name="placesIcon">Lugares</string>
+    <string name="mapIcon">Mapa</string>
+    <string name="chatsIcon">Chats</string>
+    <string name="groupIcon">Grupal</string>
+
+</resources>
