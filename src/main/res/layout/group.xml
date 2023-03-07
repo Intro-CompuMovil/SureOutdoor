@@ -22,7 +22,8 @@
         android:layout_centerHorizontal="true"
         android:text="@string/app_name"
         android:textColor="@color/black"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        android:textStyle="italic|bold"/>
 
     <ImageButton
         android:id="@+id/returnButton"
@@ -132,6 +133,7 @@
         android:gravity="center"
         android:text="@string/placesIcon"
         android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/map_text"
         android:layout_width="66dp"
@@ -142,6 +144,7 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:text="@string/mapIcon" />
+
     <TextView
         android:id="@+id/chats_text"
         android:layout_width="66dp"
@@ -152,6 +155,7 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:text="@string/chatsIcon" />
+
     <TextView
         android:id="@+id/group_text"
         android:layout_width="66dp"
