@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddReviewActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/up_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <TextView
+        android:id="@+id/name_company"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="italic|bold"/>
+
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="70dp"
+        android:layout_height="54dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/return_description"
+        app:srcCompat="@mipmap/ic_returnn_foreground" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="59dp"
+        android:layout_height="53dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/setting_description"
+        app:srcCompat="@mipmap/ic_settings_foreground" />
+
+    <ImageView
+        android:id="@+id/imageReference"
+        android:layout_width="179dp"
+        android:layout_height="199dp"
+        android:layout_below="@+id/up_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/textRef"
+        tools:ignore="ImageContrastCheck"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textDescrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginTop="90dp"
+        android:text="@string/ref"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/infoReview"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="75dp"
+        android:ems="10"
+        android:hint="@string/refe"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginTop="6dp"
+        android:text="@string/sitName"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/siteName"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginStart="160dp"
+        android:ems="10"
+        android:hint="@string/sitn"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
+
+    <TextView
+        android:id="@+id/califPlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:text="@string/califp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/textDescrip" />
+
+    <Button
+        android:id="@+id/sendReviewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/califPlace"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/sendCalif"
+        android:theme="@style/Theme.Material3.DynamicColors.Dark" />
+
+
+</RelativeLayout>
