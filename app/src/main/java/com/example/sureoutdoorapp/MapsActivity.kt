@@ -14,7 +14,7 @@ class MapsActivity : AppCompatActivity() {
 
         //Botón para regresar
 
-        val returnButton = findViewById<ImageButton>(R.id.imageButton)
+        val returnButton = findViewById<ImageButton>(R.id.returnButton)
 
         returnButton.setOnClickListener{
             onBackPressed()
@@ -22,7 +22,7 @@ class MapsActivity : AppCompatActivity() {
 
         //Botón para ir a configuración de la cuenta
 
-        val setButton = findViewById<ImageButton>(R.id.imageButton2)
+        val setButton = findViewById<ImageButton>(R.id.settingsButton)
 
         setButton.setOnClickListener{
             val intent = Intent(this, SettingsActivity::class.java)
@@ -31,7 +31,7 @@ class MapsActivity : AppCompatActivity() {
 
         //Botón para ir al inicio
 
-        val homeButton = findViewById<ImageButton>(R.id.imageButton3)
+        val homeButton = findViewById<ImageButton>(R.id.homeButton)
 
         homeButton.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
@@ -40,7 +40,7 @@ class MapsActivity : AppCompatActivity() {
 
         //Botón para ir a los lugares
 
-        val placeButton = findViewById<ImageButton>(R.id.imageButton4)
+        val placeButton = findViewById<ImageButton>(R.id.placesButton)
 
         placeButton.setOnClickListener{
             val intent = Intent(this, PlacesActivity::class.java)
@@ -49,7 +49,7 @@ class MapsActivity : AppCompatActivity() {
 
         //Botón para ir a los chats
 
-        val chatsButton = findViewById<ImageButton>(R.id.imageButton6)
+        val chatsButton = findViewById<ImageButton>(R.id.chatsButton)
 
         chatsButton.setOnClickListener{
             val intent = Intent(this, PlansActivity::class.java)
@@ -58,7 +58,7 @@ class MapsActivity : AppCompatActivity() {
 
         //Botón para ir a programar un ejercicio grupal
 
-        val groupButton = findViewById<ImageButton>(R.id.imageButton7)
+        val groupButton = findViewById<ImageButton>(R.id.groupButton)
 
         groupButton.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
