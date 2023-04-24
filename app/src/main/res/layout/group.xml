@@ -185,10 +185,10 @@
         android:layout_marginStart="210dp"
         android:layout_marginTop="15dp"
         android:ems="10"
+        android:importantForAutofill="no"
         android:inputType="text"
         android:text="@string/name_ing"
-        android:textSize="20sp"
-        android:importantForAutofill="no" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/place_text"
@@ -232,9 +232,9 @@
         android:layout_marginTop="150dp"
         android:ems="10"
         android:hint="@string/calendar_elec"
+        android:importantForAutofill="no"
         android:inputType="date"
-        android:minHeight="48dp"
-        android:importantForAutofill="no" />
+        android:minHeight="48dp" />
 
     <TextView
         android:id="@+id/time_text"

@@ -1,265 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mapsActivity">
+    tools:context=".MapsActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.appcompat.widget.Toolbar
+    android:id="@+id/up_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/orange"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="?attr/actionBarTheme" />
+
+    <TextView
+        android:id="@+id/name_company"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="italic|bold"/>
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="70dp"
+        android:layout_height="54dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/return_description"
+        app:srcCompat="@mipmap/ic_returnn_foreground" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="59dp"
+        android:layout_height="53dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/setting_description"
+        app:srcCompat="@mipmap/ic_settings_foreground" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/down_toolbar"
         android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="47dp"
+        android:background="@color/orange"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="66dp"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="34dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_home_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/mapButton"
+        android:layout_width="61dp"
+        android:layout_height="62dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_map_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/groupButton"
+        android:layout_width="52dp"
+        android:layout_height="64dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="21dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_group_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/placesButton"
+        android:layout_width="60dp"
         android:layout_height="65dp"
-        android:background="#FF9800"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginStart="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_places_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            app:srcCompat="?attr/homeAsUpIndicator"
-            tools:ignore="SpeakableTextPresentCheck" />
+    <ImageButton
+        android:id="@+id/chatsButton"
+        android:layout_width="61dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="250dp"
+        android:layout_marginBottom="25dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_plans_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:background="#FF9800"
-            android:backgroundTint="#FF9800"
-            android:gravity="center"
-            android:text="SureOutdoor"
-            android:textSize="30sp"
-            android:textStyle="italic|bold"
-            android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/home_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/homeIcon"
+        android:textColor="@color/black" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            app:srcCompat="@android:drawable/ic_menu_preferences"
-            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/places_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/placesIcon"
+        android:textColor="@color/black" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginBottom="30dp"
-        android:background="#FF9800"
-        android:backgroundTint="#FF9800"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+    <TextView
+        android:id="@+id/map_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/mapIcon" />
 
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            app:srcCompat="@android:drawable/ic_menu_gallery"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+    <TextView
+        android:id="@+id/chats_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="250dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/plansIcon" />
 
-        <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-
-            app:srcCompat="@android:drawable/ic_menu_myplaces"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            app:srcCompat="@android:drawable/ic_dialog_map"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButton6"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            app:srcCompat="@android:drawable/sym_action_chat"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButton7"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            app:srcCompat="@android:drawable/ic_menu_gallery"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#FF9800"
-        android:backgroundTint="#FF9800"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            android:gravity="center"
-            android:text="Inicio"
-            android:textSize="10sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            android:text="Lugares"
-            android:textColor="#424242"
-            android:textSize="10sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            android:text="Mapa"
-            android:textSize="10sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            android:text="Chats"
-            android:textSize="10sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:backgroundTint="#FF9800"
-            android:text="Grupos"
-            android:textSize="10sp"
-            tools:ignore="TouchTargetSizeCheck" />
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="75dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent">
+    <TextView
+        android:id="@+id/group_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/groupIcon" />
 
 
-        <SeekBar
-            android:id="@+id/seekBar3"
-            android:layout_width="270dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageButton
-            android:id="@+id/imageButton12"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@mipmap/ic_gym_foreground"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButton14"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar3"
-            app:layout_constraintStart_toEndOf="@+id/imageButton12"
-            app:srcCompat="@mipmap/ic_store_foreground"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButton15"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar3"
-            app:layout_constraintStart_toEndOf="@+id/imageButton14"
-            app:srcCompat="@mipmap/ic_park_foreground"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:text="Km"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/seekBar3" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/red"
-            android:text="Iniciar Ruta!"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar3"
-            app:layout_constraintStart_toEndOf="@+id/imageButton15"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <FrameLayout
-        android:layout_width="409dp"
-        android:layout_height="606dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@mipmap/im_maps_foreground"
-            tools:ignore="ImageContrastCheck" />
-    </FrameLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

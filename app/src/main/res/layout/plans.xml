@@ -1,9 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlansActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+    android:id="@+id/up_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/orange"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="?attr/actionBarTheme" />
+
+    <TextView
+        android:id="@+id/name_company"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="italic|bold"/>
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="70dp"
+        android:layout_height="54dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/return_description"
+        app:srcCompat="@mipmap/ic_returnn_foreground" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="59dp"
+        android:layout_height="53dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/setting_description"
+        app:srcCompat="@mipmap/ic_settings_foreground" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/down_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="47dp"
+        android:background="@color/orange"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="66dp"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="34dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_home_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/mapButton"
+        android:layout_width="61dp"
+        android:layout_height="62dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_map_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/groupButton"
+        android:layout_width="52dp"
+        android:layout_height="64dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="21dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_group_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/placesButton"
+        android:layout_width="60dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_places_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/chatsButton"
+        android:layout_width="61dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="250dp"
+        android:layout_marginBottom="25dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@mipmap/ic_plans_foreground"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/home_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/homeIcon"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/places_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/placesIcon"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/map_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/mapIcon" />
+
+    <TextView
+        android:id="@+id/chats_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="250dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/plansIcon" />
+
+    <TextView
+        android:id="@+id/group_text"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/groupIcon" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/up_toolbar"
+        android:layout_alignBottom="@+id/map_text"
+        android:layout_marginBottom="80dp"
+        tools:listitem="@layout/plan_list" />
+
+
+</RelativeLayout>

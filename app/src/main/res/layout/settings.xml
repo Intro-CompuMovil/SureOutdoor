@@ -83,8 +83,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/person_image"
         android:layout_marginStart="80dp"
-        android:textColor="@color/black"
-        android:text="@string/nom_prueba" />
+        android:text="@string/nom_prueba"
+        android:textColor="@color/black" />
     <TextView
         android:id="@+id/last_name_ej"
         android:layout_width="wrap_content"

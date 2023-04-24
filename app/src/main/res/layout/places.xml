@@ -7,6 +7,8 @@
     android:layout_height="fill_parent"
     tools:context=".PlacesActivity">
 
+    //Default en todas
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/up_toolbar"
         android:layout_width="match_parent"
@@ -82,7 +84,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="7dp"
-        android:layout_marginBottom="27dp"
+        android:layout_marginBottom="21dp"
         android:background="@color/orange"
         android:contentDescription="@string/icon"
         app:srcCompat="@mipmap/ic_group_foreground"
@@ -104,8 +106,8 @@
         android:id="@+id/chatsButton"
         android:layout_width="61dp"
         android:layout_height="64dp"
-        android:layout_marginStart="250dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="250dp"
         android:layout_marginBottom="25dp"
         android:background="@color/orange"
         android:contentDescription="@string/icon"
@@ -166,6 +168,7 @@
         android:textColor="@color/black"
         android:text="@string/groupIcon" />
 
+    //Parte central
     <TextView
         android:id="@+id/filter_text"
         android:layout_width="wrap_content"
@@ -221,33 +224,6 @@
         android:layout_marginTop="41dp"
         android:contentDescription="@string/ratingStars" />
 
-    <ImageView
-        android:id="@+id/gym_a_image"
-        android:layout_width="147dp"
-        android:layout_height="136dp"
-        android:layout_below="@+id/gymButton"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
-        android:contentDescription="@string/gym_a"
-        app:srcCompat="@mipmap/im_gym_foreground" />
-
-    <ImageView
-        android:id="@+id/park_b_image"
-        android:layout_width="147dp"
-        android:layout_height="136dp"
-        android:layout_below="@+id/gym_a_image"
-        android:layout_marginStart="10dp"
-        android:contentDescription="@string/gym_a"
-        app:srcCompat="@mipmap/im_park_foreground" />
-    <ImageView
-        android:id="@+id/store_c_image"
-        android:layout_width="147dp"
-        android:layout_height="136dp"
-        android:layout_below="@+id/park_b_image"
-        android:layout_marginStart="10dp"
-        android:contentDescription="@string/gym_a"
-        app:srcCompat="@mipmap/im_store_foreground" />
-
     <Button
         android:id="@+id/newReview"
         android:layout_width="wrap_content"
@@ -258,137 +234,17 @@
         android:text="@string/review"
         android:theme="@style/Theme.Material3.DynamicColors.DayNight" />
 
-    <TextView
-        android:id="@+id/text_imagea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    //ListView
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/newReview"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="@string/gym_a"
-        android:textColor="@color/black" />
+        android:layout_alignBottom="@+id/map_text"
+        android:layout_marginBottom="80dp"
+        tools:listitem="@layout/place_list" />
 
-    <TextView
-        android:id="@+id/text_dista"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newReview"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/dist_a"
-        android:textColor="@color/black" />
-
-    <ImageView
-        android:id="@+id/icon_a"
-        android:layout_width="45dp"
-        android:layout_height="44dp"
-        android:layout_below="@+id/text_imagea"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:background="@color/blue"
-        android:contentDescription="@string/gymButt"
-        app:srcCompat="@mipmap/ic_gym_foreground"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageView
-        android:id="@+id/califA"
-        android:layout_width="98dp"
-        android:layout_height="64dp"
-        android:layout_below="@+id/text_dista"
-        android:layout_marginStart="270dp"
-        android:layout_marginTop="-2dp"
-        android:background="@color/white"
-        android:contentDescription="@string/ratingStars"
-        app:srcCompat="@mipmap/im_strs_foreground"
-        tools:ignore="ImageContrastCheck" />
-
-    <TextView
-        android:id="@+id/text_imageb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newReview"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:text="@string/park_b"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/text_distb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newReview"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="150dp"
-        android:text="@string/dist_b"
-        android:textColor="@color/black" />
-
-    <ImageView
-        android:id="@+id/icon_b"
-        android:layout_width="45dp"
-        android:layout_height="44dp"
-        android:layout_below="@+id/text_imageb"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:background="@color/teal_700"
-        android:contentDescription="@string/strButt"
-        app:srcCompat="@mipmap/ic_park_foreground"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageView
-        android:id="@+id/califB"
-        android:layout_width="98dp"
-        android:layout_height="64dp"
-        android:layout_below="@+id/text_distb"
-        android:layout_marginStart="270dp"
-        android:layout_marginTop="-2dp"
-        android:background="@color/white"
-        android:contentDescription="@string/ratingStars"
-        app:srcCompat="@mipmap/im_strs_foreground"
-        tools:ignore="ImageContrastCheck" />
-
-    <TextView
-        android:id="@+id/text_imagec"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newReview"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="290dp"
-        android:text="@string/store_c"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/text_distc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newReview"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="290dp"
-        android:text="@string/dist_c"
-        android:textColor="@color/black" />
-
-    <ImageView
-        android:id="@+id/icon_c"
-        android:layout_width="45dp"
-        android:layout_height="44dp"
-        android:layout_below="@+id/text_imagec"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:background="@color/red"
-        android:contentDescription="@string/prkButt"
-        app:srcCompat="@mipmap/ic_store_foreground"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageView
-        android:id="@+id/califC"
-        android:layout_width="98dp"
-        android:layout_height="64dp"
-        android:layout_below="@+id/text_distc"
-        android:layout_marginStart="270dp"
-        android:layout_marginTop="-2dp"
-        android:background="@color/white"
-        android:contentDescription="@string/ratingStars"
-        app:srcCompat="@mipmap/im_strs_foreground"
-        tools:ignore="ImageContrastCheck" />
 
 
 </RelativeLayout>
