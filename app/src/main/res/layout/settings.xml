@@ -33,14 +33,14 @@
         android:contentDescription="@string/return_description"
         app:srcCompat="@mipmap/ic_returnn_foreground" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/person_image"
         android:layout_width="170dp"
         android:layout_height="184dp"
         android:layout_below="@+id/up_toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@color/white"
+        android:background="@color/red"
         android:contentDescription="@string/photo_info"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />

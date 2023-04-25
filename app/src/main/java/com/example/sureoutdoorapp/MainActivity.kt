@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //Botón para ir a los chats
+        //Botón para ir a los planes
 
         val chatsButton = findViewById<ImageButton>(plansButton)
 

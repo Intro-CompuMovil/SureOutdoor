@@ -54,5 +54,5 @@
     <string name="sitn">Lugar X</string>
     <string name="califp">Calificación:</string>
     <string name="sendCalif">Compartir reseña</string>
-
+    <string name = "google_maps_key" templateMergeStrategy = "preserve" translatable="false"> AIzaSyBfUfwlU3e-09HGEGsdt1mSg9juN2dszTA </string>
 </resources>

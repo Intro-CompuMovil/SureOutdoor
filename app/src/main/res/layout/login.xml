@@ -66,4 +66,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <ImageView
+        android:id="@+id/sports_gif"
+        android:layout_width="399dp"
+        android:layout_height="744dp"
+        android:src="@drawable/datagif"
+        tools:ignore="MissingConstraints"
+        android:contentDescription="TODO" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
