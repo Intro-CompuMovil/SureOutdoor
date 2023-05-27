@@ -86,7 +86,7 @@
         android:layout_height="54dp"
         android:background="@color/orange"
         android:contentDescription="@string/return_description"
-        app:srcCompat="@mipmap/ic_returnn_foreground" />
+        app:srcCompat="@mipmap/ic_getout_foreground" />
 
     <ImageButton
         android:id="@+id/settingsButton"

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import com.example.sureoutdoorapp.databinding.SettingsBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -38,12 +39,14 @@ class SettingsActivity : AppCompatActivity() {
         binding.ageEj.setText(age)
 
 
-        //Botón para el retorno
+        //Botón para cerrar sesión
 
         val returnButton = findViewById<ImageButton>(R.id.returnButton)
 
         returnButton.setOnClickListener{
-            onBackPressed()
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
 
         //Botón para editar el perfil

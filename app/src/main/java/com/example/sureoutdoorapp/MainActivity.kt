@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.example.sureoutdoorapp.R.id.*
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("WrongViewCast")
@@ -19,12 +20,14 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        //Botón para el retorno
+        //Botón para cerrar sesión
 
         val loginButton = findViewById<ImageButton>(returnButton)
 
         loginButton.setOnClickListener{
-            finish()
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
 
         //Botón para ir a la configuración del perfil

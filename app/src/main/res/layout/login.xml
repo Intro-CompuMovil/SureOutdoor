@@ -9,7 +9,7 @@
     android:background="#FF9800">
 
     <EditText
-        android:id="@+id/editTextLogin"
+        android:id="@+id/emailLogin"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="305dp"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/passwordLogin"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="365dp"
@@ -66,13 +66,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
-        android:id="@+id/sports_gif"
-        android:layout_width="399dp"
-        android:layout_height="744dp"
-        android:src="@drawable/datagif"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="TODO" />
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrarse"
+        android:textColor="#FFFFFFFF"
+        android:backgroundTint="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

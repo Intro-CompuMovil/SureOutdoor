@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import com.google.firebase.auth.FirebaseAuth
 
 class PlansActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,11 +13,14 @@ class PlansActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        //Botón para el retorno
+        //Botón para cerrar sesión
+
         val returnButton = findViewById<ImageButton>(R.id.returnButton)
 
         returnButton.setOnClickListener{
-            onBackPressed()
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
 
         //Botón para ir a la configuración del perfil

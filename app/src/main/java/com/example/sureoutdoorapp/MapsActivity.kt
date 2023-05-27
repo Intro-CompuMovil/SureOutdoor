@@ -56,9 +56,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
     override fun onMapReady(googleMap: GoogleMap){
         map = googleMap
-        //createMarker()
-        //map.setOnMyLocationButtonClickListener(this)
-        //map.setOnMyLocationClickListener(this)
+        createMarker()
+        createMarker2()
+        map.setOnMyLocationButtonClickListener(this)
+        map.setOnMyLocationClickListener(this)
         enableLocation()
 
         var currentLocation : Location? = null
@@ -103,11 +104,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         val coordinates = LatLng(4.627480, -74.064217)
         val marker : MarkerOptions = MarkerOptions().position(coordinates).title("Universidad!")
         map.addMarker(marker)
-        map.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(coordinates, 18f),
-            4000,
-            null
-        )
+    }
+
+    private fun createMarker2() {
+        val coordinates = LatLng(4.945673, -74.874521)
+        val marker : MarkerOptions = MarkerOptions().position(coordinates).title("Universidad!")
+        map.addMarker(marker)
     }
 
     private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
