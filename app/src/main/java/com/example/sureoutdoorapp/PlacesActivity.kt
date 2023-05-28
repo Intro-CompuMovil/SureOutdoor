@@ -9,6 +9,9 @@ import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 
 class PlacesActivity : AppCompatActivity() {
+
+    var email: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.places)
@@ -16,6 +19,9 @@ class PlacesActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         //Botón para cerrar sesión
+
+        //Recibe el correo del usuario de la actividad de donde viene
+        email = intent.getStringExtra("email").toString()
 
         val returnButton = findViewById<ImageButton>(R.id.returnButton)
 
@@ -39,6 +45,7 @@ class PlacesActivity : AppCompatActivity() {
 
         homeButton.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 

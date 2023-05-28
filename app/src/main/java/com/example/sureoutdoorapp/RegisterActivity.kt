@@ -74,9 +74,9 @@ class RegisterActivity : AppCompatActivity() {
                                     //Guardar los otros datos
                                     val data = hashMapOf("name" to binding.personName.text.toString(),
                                         "lastname" to binding.lastPersonName.text.toString(),
-                                        "age" to binding.personAge.text.toString(),
-                                        "walk" to "0",
-                                        "target" to binding.personTarget.text.toString(),
+                                        "age" to binding.personAge.text.toString().toInt(),
+                                        "walk" to "0".toInt(),
+                                        "target" to binding.personTarget.text.toString().toInt(),
                                     "email" to binding.personEmail.text.toString())
 
                                     database.collection("users").document(user.email.toString()).set(data).addOnSuccessListener{
