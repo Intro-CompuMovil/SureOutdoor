@@ -11,6 +11,7 @@ import com.example.sureoutdoorapp.databinding.MainBinding
 import com.example.sureoutdoorapp.databinding.RegisterBinding
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -38,42 +39,43 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
 
         //Creo variables para recibir lo de la base
-        var name = "a"
-        var lastName = "a"
-        var age = "a"
-        var walk = "0"
-        var target = "0"
+        var name: String = ""
+        var lastName: String = ""
+        var age: String = ""
+        var walk: String = ""
+        var target: String = ""
 
         //Actualizar información con lo que viene de la base
 
         val email = intent.getStringExtra("email").toString()
-        Log.i("Correo es:", email)
-        database.collection("users").document(email).get().addOnSuccessListener {
-            if(it.exists()){
-                Log.i("Entro", "Entramos")
-                name = it.getString("name").toString()
-                lastName = it.getString("lastname").toString()
-                age = it.getString("age").toString()
-                target = it.getString("target").toString()
+        //Log.i("Correo es:", email)
+        database.collection("users").get().addOnSuccessListener {snapshot->
+            for(documento in snapshot){
+                if(documento.id == email){
+                    name = documento.getString("name").toString()
+                    Log.i("Adentro", "Entramos")
+                    lastName = documento.getString("lastname").toString()
+                    age = documento.getString("age").toString()
+                    walk = documento.getString("walk").toString()
+                    target = documento.getString("target").toString()
+                    //Falta foto
+                    //Log.i("nombre", name)
+                }
             }
-            //Falta foto
+            //Actualizar info con nombre
+            binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
+
+            //Actualizar cantidad de pasos completados
+            binding.textPaso.setText(walk+" pasos completados")
+            //Actualizar cantidad de pasos faltantes
+            var w1 = walk.toInt()
+            var t1  = target.toInt()
+            var falta = t1 - w1
+            binding.textPlus.setText("Te faltan "+falta+" para completar tu meta, ¡vamos que sí se puede!")
+            //Actualizar dato curioso
+            binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
+
         }
-        val currentUser = User(name, lastName, age, walk, target)
-        Log.i("nombre", name)
-
-        //Actualizar info con nombre
-        binding.infoS.text = "¡Hola "+currentUser.name+"! Esta es la cantidad de pasos que llevas hoy..."
-
-        //Actualizar cantidad de pasos completados
-        binding.textPaso.setText(currentUser.walk+" pasos completados")
-        //Actualizar cantidad de pasos faltantes
-        var w1 = currentUser.walk.toInt()
-        var t1  = currentUser.target.toInt()
-        var falta = t1 - w1
-        binding.textPlus.setText("Te faltan "+falta+" para completar tu meta, ¡vamos que sí se puede!")
-        //Actualizar dato curioso
-        binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
-
 
         //Botón para cerrar sesión
         binding.returnButton.setOnClickListener{
