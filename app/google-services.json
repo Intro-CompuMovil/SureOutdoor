@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "922280040941",
+    "project_id": "sureoutdoor-88bfc",
+    "storage_bucket": "sureoutdoor-88bfc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922280040941:android:21c63381b4b709a6ed2fe4",
+        "android_client_info": {
+          "package_name": "com.example.sureoutdoorapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0_KkQFAq1w3VXcnq9aPUUfgdiRDGZx-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

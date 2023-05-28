@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
                         if(it.isSuccessful){
                             //Información correcta, se carga la pantalla principal
                             val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("email", binding.emailLogin.text.toString())
                             startActivity(intent)
                         }else{
                             Toast.makeText(applicationContext, "Error al iniciar sesión, verifique credenciales", Toast.LENGTH_LONG).show()
