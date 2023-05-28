@@ -20,6 +20,9 @@ import com.example.sureoutdoorapp.databinding.LoginBinding
 import com.example.sureoutdoorapp.databinding.RegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
 
@@ -230,5 +233,45 @@ class RegisterActivity : AppCompatActivity() {
         )
         SharedData.image = image
         Toast.makeText(this, "Imagen guardada en la galería", Toast.LENGTH_SHORT).show()
+        val storageRef = FirebaseStorage.getInstance().reference
+        val imagesRef = storageRef.child("users/${binding.personEmail.text}/images")
+        val fileName = "image_${System.currentTimeMillis()}.jpg"
+        val imageRef = imagesRef.child(fileName)
+
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        val uploadTask = imageRef.putBytes(data)
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                val imageURL = downloadUri.toString()
+                // Guardar la URL de la imagen en la base de datos del usuario, si corresponde
+                saveImageURLToUser(binding.personEmail.text.toString(), imageURL)
+                SharedData.image = image
+                Toast.makeText(this, "Imagen guardada en Firebase Storage", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al obtener la URL de descarga: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(this, "Error al subir la imagen: ${exception.message}", Toast.LENGTH_SHORT).show()
+        }
     }
+    private fun saveImageURLToUser(userId: String, imageURL: String) {
+        //val db = FirebaseFirestore.getInstance()
+        val userRef = database.collection("images").document(userId)
+        val data = hashMapOf(
+            "imageURL" to imageURL
+        )
+        userRef.set(data, SetOptions.merge())
+            .addOnSuccessListener {
+                // La URL de la imagen se ha guardado exitosamente en Firestore
+                Toast.makeText(this, "URL de imagen guardada en Firestore", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                // Ocurrió un error al guardar la URL de la imagen en Firestore
+                Toast.makeText(this, "Error al guardar la URL de la imagen en Firestore: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 }
