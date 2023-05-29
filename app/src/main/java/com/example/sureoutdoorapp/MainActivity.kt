@@ -21,6 +21,7 @@ import com.example.sureoutdoorapp.databinding.MainBinding
 import com.example.sureoutdoorapp.databinding.RegisterBinding
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -33,25 +34,22 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     //private val auth = FirebaseAuth.getInstance()
 
     //Sensor de pasos
-    private lateinit var sensorManager: SensorManager
-    private var stepSensor: Sensor? = null
-    private var currentUserUid: String? = null
-    //private var stepCount: Float = 0.0F
+    private var sensorManager: SensorManager? = null
+    private var walking = false
+    private var rein = 0F
 
-    //var steps: Int = 0
-
-    //var walk: Int = 0
-
-    //var target: Int = 0
-
+    //Email del usuario actual
     private var email: String = ""
+    private var user: FirebaseUser? = null
+    private lateinit var auth: FirebaseAuth
 
     //Para el permiso
-    companion object{
+    companion object {
 
         private const val ACTIVITY_REQUEST_CODE = 1
     }
 
+    //Binding de la clase
     private lateinit var binding: MainBinding
 
     @SuppressLint("WrongViewCast")
@@ -71,288 +69,154 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         //Inicializar Firebase
         FirebaseApp.initializeApp(this)
 
+        //Inicializa la base
         database = FirebaseFirestore.getInstance()
 
-        //Inicializa los pasos
-        UserDataManager.steps = 0
+        //Inicializa la autenticación
+        auth = FirebaseAuth.getInstance()
 
-        /*
-        database.firestoreSettings = FirebaseFirestoreSettings.Builder()
-            .setPersistenceEnabled(true)
-            .build()
-         */
 
         //Permiso para el acceso a la actividad física
         phisicalActivity()
 
+        //Inicializa el sensor
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-        currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
-        Log.i("Usuario", currentUserUid.toString())
-
-        //Creo variables para recibir lo de la base
-        var name = ""
-        var walk = 0
-        var target = 0
-
-        //Actualizar información con lo que viene de la base
+        //Correo actual
         email = intent.getStringExtra("email").toString()
-        Log.i("Correo del personaje", email)
-        //Log.i("Correo es:", email)
-        database.collection("users").get().addOnSuccessListener {snapshot->
-            for(documento in snapshot){
-                if(documento.id == email){
-                    name = documento.getString("name").toString()
-                    Log.i("Adentro", "Entramos")
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
-                    //walk = documento.get("walk").toString().toInt()
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
-                    //Falta foto
-                    //Log.i("nombre", name)
-                }
-            }
-            //Actualizar info con nombre
-            binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
-
-            //Actualizar cantidad de pasos completados
-            binding.textPaso.setText("$walk pasos completados")
-            //Actualizar cantidad de pasos faltantes
-            var falta = target - walk
-            binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
-            //Actualizar dato curioso
-            binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
-
-        }
 
         //Botón para cerrar sesión
-        binding.returnButton.setOnClickListener{
+        binding.returnButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             //Parar lectura del sensor
-            sensorManager.unregisterListener(this)
+            sensorManager!!.unregisterListener(this)
+            walking = false
+            rein = 0F
             //Email vuelve a ser vacío
             email = ""
-            UserDataManager.steps = 0
-            //resetSteps()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
 
         //Botón para ir a la configuración del perfil
-        binding.settingsButton.setOnClickListener{
+        binding.settingsButton.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
         }
 
         //Botón para ir a ver los lugares
-        binding.placesButton.setOnClickListener{
+        binding.placesButton.setOnClickListener {
             val intent = Intent(this, PlacesActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
         }
 
         //Botón para el mapa
-        binding.mapButton.setOnClickListener{
+        binding.mapButton.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
 
         //Botón para ir a los planes
-        binding.plansButton.setOnClickListener{
+        binding.plansButton.setOnClickListener {
             val intent = Intent(this, PlansActivity::class.java)
             startActivity(intent)
         }
 
         //Botón para programar un ejercicio grupal
-        binding.groupButton.setOnClickListener{
+        binding.groupButton.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
             startActivity(intent)
         }
 
     }
 
-    override fun onStart(){
-        super.onStart()
-        UserDataManager.steps = 0
+    override fun onDestroy() {
+        super.onDestroy()
+        sensorManager!!.unregisterListener(this)
+        walking = false
+        rein = 0F
     }
-
-
-    override fun onRestart(){
-        super.onRestart()
-
-        //stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
-
-        //Creo variables para recibir lo de la base
-        var name = ""
-        var walk = 0
-        var target = 0
-        //Actualizar información con lo que viene de la base
-        email = intent.getStringExtra("email").toString()
-        //Log.i("Correo es:", email)
-        database.collection("users").get().addOnSuccessListener {snapshot->
-            for(documento in snapshot){
-                if(documento.id == email){
-                    name = documento.getString("name").toString()
-                    Log.i("Adentro", "Entramos")
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
-                    //Falta foto
-                    Log.i("nombre", name)
-                }
-            }
-            //Actualizar info con nombre
-            binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
-
-            //Actualizar cantidad de pasos completados
-            binding.textPaso.setText("$walk pasos completados")
-            //Actualizar cantidad de pasos faltantes
-            var falta = target - walk
-            binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
-            //Actualizar dato curioso
-            binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
-
-        }
-    }
-
-    /*
-    override fun onStart(){
-        super.onStart()
-        //resetSteps()
-    }
-     */
 
     override fun onResume() {
         super.onResume()
 
-        //stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
-
-        //Creo variables para recibir lo de la base
-        var name = ""
-        var walk = 0
-        var target = 0
-        //Actualizar información con lo que viene de la base
-        email = intent.getStringExtra("email").toString()
-        //Log.i("Correo es:", email)
-        database.collection("users").get().addOnSuccessListener {snapshot->
-            for(documento in snapshot){
-                if(documento.id == email){
-                    name = documento.getString("name").toString()
-                    Log.i("Adentro", "Entramos")
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
-                    //Falta foto
-                    Log.i("nombre", name)
-                }
-            }
-            //Actualizar info con nombre
-            binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
-
-            //Actualizar cantidad de pasos completados
-            binding.textPaso.setText("$walk pasos completados")
-            //Actualizar cantidad de pasos faltantes
-            var falta = target - walk
-            binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
-            //Actualizar dato curioso
-            binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
-
+        user = auth.currentUser
+        if (user != null) {
+            Log.i("Adentro del onResume", "Entramos")
+            //Hay un usuario
+            walking = true
+            val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
     }
-
-
-    /*
-    override fun onPause() {
-        //super.onPause()
-        //sensorManager.unregisterListener(stepListener)
-    }
-     */
 
     override fun onSensorChanged(event: SensorEvent?) {
 
-        //Número de pasos contados
-        //steps = event!!.values[0]
-        var s = (event?.values?.get(0) ?: return)
-        var steps = s.toInt()
+        Log.i("Valor de Rein inicial", rein.toString())
+        if (rein == 0F) {
+            //Implica que acaba de entrar un nuevo usuario
+            if (event != null) {
+                event.values[0] = 0.0F
+                //Cambio de Rein
+                rein = 1F
+                Log.i("Valor de Rein al cambio", rein.toString())
+            }
+        }
 
         var walk = 0
+        var name = ""
         var target = 0
-        //var target = 0.0F
+        var contador = 0
+        var previousSteps = 0
+        //var currentSteps = 0
 
-        //val change = steps.toString()
+        if(rein == 1F){
+            //Ya ha ingresado antes este usuario
+            //Traer datos
+            database.collection("users").document(email).get().addOnSuccessListener {
+                name = it.getString("name").toString()
+                Log.i("Valor nombre", name)
+                target = ((it.getLong("target")?.toInt() ?: Int) as Int)
+                Log.i("Valor objetivo", target.toString())
+                walk = ((it.getLong("walk")?.toInt() ?: Int) as Int)
+                Log.i("Valor de pasos", walk.toString())
+                if(walking){
+                    val totalSteps = event?.values?.get(0)?.toInt() ?: 0
+                    Log.i("Total de pasos", totalSteps.toString())
+                    //Nueva cantidad de pasos
+                    //Pasos que vienen de la base
+                    if(contador == 0){
+                        previousSteps = walk
+                        contador = 1
+                    }
+                    val currentSteps = previousSteps + totalSteps - previousSteps
+                    previousSteps = totalSteps
 
-        //Obtener datos de la base
-        database.collection("users").get().addOnSuccessListener {
-            for(documento in it){
-                if(documento.id == email){
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
+                    Log.i("Aquí varía el sensor", currentSteps.toString())
+                    //Actualizar base
+                    val newData = hashMapOf("walk" to currentSteps)
+                    database.collection("users").document(email).set(newData, SetOptions.merge())
+                        .addOnSuccessListener {
+                            //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            //Toast.makeText(applicationContext, "Error al actualizar la información", Toast.LENGTH_SHORT).show()
+                        }
+                    //Actualizar info en pantalla
+                    binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
+                    binding.textPaso.setText("${currentSteps} pasos completados")
+                    var falta = target - currentSteps
+                    Log.i("Faltan tantos", falta.toString())
+                    Log.i("Target", target.toString())
+                    binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
+                    binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
                 }
             }
-            //nueva cantidad de pasos
-            val currentSteps = UserDataManager.steps
-            val newWalk = currentSteps + steps
-            //Actualizar número de pasos
-            UserDataManager.steps = newWalk
-
-            //Actualizar base
-            val newData = hashMapOf("walk" to newWalk)
-            database.collection("users").document(email).set(newData, SetOptions.merge()).addOnSuccessListener{
-                //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
-            }
-                .addOnFailureListener{
-                    //Toast.makeText(applicationContext, "Error al actualizar la información", Toast.LENGTH_SHORT).show()
-                }
-            //Actualizar info en pantalla
-            binding.textPaso.setText("$newWalk pasos completados")
-            var falta = target - newWalk
-            binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
         }
-
-
-        /*
-        //Número de pasos contados
-        //steps = event!!.values[0]
-        Log.i("valor", event!!.values[0].toString())
-        //var walk = 0.0F
-        //val change = steps.toString()
-        //Traer dato actual de la base
-        database.collection("users").get().addOnSuccessListener{
-            for(documento in it){
-                if(documento.id == email){
-                    //Obtengo el dato de pasos actuales
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int).toFloat()
-                }
-            }
-        }
-        //Contar nuevos pasos
-        var newWalk = walk + steps
-        //Actualizar base
-        val newData = hashMapOf("walk" to newWalk)
-        database.collection("users").document(email).set(newData, SetOptions.merge()).addOnSuccessListener{
-            //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
-        }
-            .addOnFailureListener{
-                //Toast.makeText(applicationContext, "Error al actualizar la información", Toast.LENGTH_SHORT).show()
-            }
-        //Actualizar info en pantalla
-        binding.textPaso.setText("$steps pasos completados")
-        //var falta = target - steps
-        binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
-         */
     }
-
-    /*
-    fun resetSteps() {
-        steps = 0.0F
-    }
-     */
-
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         //Nada
