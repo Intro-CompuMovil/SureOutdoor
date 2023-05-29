@@ -7,10 +7,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.location.Location
 import android.util.Log
 import android.widget.Button
@@ -20,15 +21,14 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
-import com.google.android.gms.maps.model.Polyline
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener, OnMyLocationClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener, OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
     private lateinit var map:GoogleMap
     private lateinit var btnCalculate:Button
     private var start: String = ""
@@ -40,6 +40,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     companion object {
         const val REQUEST_CODE_LOCATION = 0
     }
+
+    private var currentLocation: Location? = null
+    private val markerList = mutableListOf<Marker>()
+    private var selectedLocation: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,60 +60,58 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
     override fun onMapReady(googleMap: GoogleMap){
         map = googleMap
-        createMarker()
-        createMarker2()
-        map.setOnMyLocationButtonClickListener(this)
-        map.setOnMyLocationClickListener(this)
+        map.setOnMarkerClickListener(this)
         enableLocation()
 
-        var currentLocation : Location? = null
+        addCustomGymMarker(4.6308429975221745, -74.06460710544242, Color.BLUE, "Stark Smart Gym Calle 43")
+        addCustomGymMarker(4.632483604225928, -74.06673794596544, Color.BLUE, "Palermmo 45")
+        addCustomGymMarker(4.6335580575401165, -74.0636951693814, Color.BLUE, "Fight Club Bogota")
 
         btnCalculate.setOnClickListener{
             start = ""
             end = ""
             poly?.remove()
             poly = null
-            if(::map.isInitialized){
-                /*if(isLocationPermissionGranted()){
-                    if (ActivityCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {}
-                    else {
-                        fusedLocationClient.lastLocation
-                            .addOnCompleteListener(this) { task ->
-                                currentLocation = task.result
-                            }
-                    }
-                }*/
 
-                map.setOnMapClickListener {
-                    if (start.isEmpty()) {
-                        start = "${it.longitude},${it.latitude}"
-                    }
-                    else if (end.isEmpty()) {
-                        end = "${it.longitude},${it.latitude}"
-                        createRoute()
-                    }
+            getLastLocation()
+
+            if(::map.isInitialized){
+
+                if (start.isEmpty()) {
+                    start = "${currentLocation?.longitude},${currentLocation?.latitude}"
+                }
+
+                if (end.isEmpty()) {
+                    start = "${selectedLocation?.longitude}, ${selectedLocation?.latitude}"
+                    createRoute()
                 }
             }
         }
     }
 
-    private fun createMarker() {
-        val coordinates = LatLng(4.627480, -74.064217)
-        val marker : MarkerOptions = MarkerOptions().position(coordinates).title("Universidad!")
-        map.addMarker(marker)
+    private fun addCustomGymMarker(lat: Double, lon: Double, color: Int, nombre: String) {
+        val coordinates = LatLng(lat, lon)
+        val markerOptions = MarkerOptions().position(coordinates).title(nombre)
+        val bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(getMarkerBitmap(color))
+        markerOptions.icon(bitmapDescriptor)
+        val marker = map.addMarker(markerOptions)
+        marker?.let{
+            markerList.add(it)
+        }
     }
 
-    private fun createMarker2() {
-        val coordinates = LatLng(4.945673, -74.874521)
-        val marker : MarkerOptions = MarkerOptions().position(coordinates).title("Universidad!")
-        map.addMarker(marker)
+    private fun getMarkerBitmap(color: Int): Bitmap {
+        val drawable = ContextCompat.getDrawable(this, R.mipmap.ic_gym)
+        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+        drawable?.setTint(color)
+        val bitmap = Bitmap.createBitmap(
+            drawable?.intrinsicWidth ?: 0,
+            drawable?.intrinsicHeight ?: 0,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable?.draw(canvas)
+        return bitmap
     }
 
     private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
@@ -170,6 +172,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         Toast.makeText(this, "Te encuentras en ${p0.latitude}, ${p0.longitude}", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onMarkerClick (marker:Marker): Boolean{
+        if(markerList.contains(marker)){
+            selectedLocation?.latitude = marker.position.latitude
+            selectedLocation?.longitude = marker.position.longitude
+        }
+        return false
+    }
+
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.openrouteservice.org/")
@@ -200,5 +210,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         runOnUiThread {
             poly = map.addPolyline(polyLineOptions)
         }
+    }
+
+    private fun getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {}
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                location?.let {
+                    currentLocation = it
+                }
+            }
     }
 }

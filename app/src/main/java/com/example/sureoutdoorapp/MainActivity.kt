@@ -28,11 +28,6 @@ import com.google.firebase.firestore.SetOptions
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
-    //Para el permiso
-    companion object{
-        private const val ACTIVITY_REQUEST_CODE = 1
-    }
-
     //Base de datos
     lateinit var database: FirebaseFirestore
     //private val auth = FirebaseAuth.getInstance()
@@ -40,18 +35,29 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     //Sensor de pasos
     private lateinit var sensorManager: SensorManager
     private var stepSensor: Sensor? = null
-    var steps: Float = 0.0F
+    private var currentUserUid: String? = null
+    //private var stepCount: Float = 0.0F
 
-    var target: Float = 0.0F
+    //var steps: Int = 0
 
-    var email: String = ""
+    //var walk: Int = 0
+
+    //var target: Int = 0
+
+    private var email: String = ""
+
+    //Para el permiso
+    companion object{
+
+        private const val ACTIVITY_REQUEST_CODE = 1
+    }
 
     private lateinit var binding: MainBinding
 
     @SuppressLint("WrongViewCast")
     //override fun onStart() {
-        //super.onStart()
-        //setContentView(R.layout.login)
+    //super.onStart()
+    //setContentView(R.layout.login)
     //}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,36 +73,42 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         database = FirebaseFirestore.getInstance()
 
+        //Inicializa los pasos
+        UserDataManager.steps = 0
+
+        /*
         database.firestoreSettings = FirebaseFirestoreSettings.Builder()
             .setPersistenceEnabled(true)
             .build()
+         */
 
         //Permiso para el acceso a la actividad física
         phisicalActivity()
+
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        //stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+        Log.i("Usuario", currentUserUid.toString())
 
         //Creo variables para recibir lo de la base
-        var name: String = ""
-        var lastName: String = ""
-        var age: Int = 0
-        var walk: Float = 0.0F
-        target = 0.0F
+        var name = ""
+        var walk = 0
+        var target = 0
 
         //Actualizar información con lo que viene de la base
         email = intent.getStringExtra("email").toString()
+        Log.i("Correo del personaje", email)
         //Log.i("Correo es:", email)
         database.collection("users").get().addOnSuccessListener {snapshot->
             for(documento in snapshot){
                 if(documento.id == email){
                     name = documento.getString("name").toString()
                     Log.i("Adentro", "Entramos")
-                    lastName = documento.getString("lastname").toString()
-                    age = documento.get("age").toString().toInt()
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int).toFloat()
+                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
                     //walk = documento.get("walk").toString().toInt()
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int).toFloat()
+                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
                     //Falta foto
                     //Log.i("nombre", name)
                 }
@@ -117,8 +129,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         //Botón para cerrar sesión
         binding.returnButton.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
+            //Parar lectura del sensor
+            sensorManager.unregisterListener(this)
+            //Email vuelve a ser vacío
+            email = ""
+            UserDataManager.steps = 0
+            //resetSteps()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         //Botón para ir a la configuración del perfil
@@ -154,18 +173,24 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
     }
+
+    override fun onStart(){
+        super.onStart()
+        UserDataManager.steps = 0
+    }
+
+
     override fun onRestart(){
         super.onRestart()
 
-        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        //stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
 
         //Creo variables para recibir lo de la base
-        var name: String = ""
-        var lastName: String = ""
-        var age: Int = 0
-        var walk: Float = 0.0F
+        var name = ""
+        var walk = 0
+        var target = 0
         //Actualizar información con lo que viene de la base
         email = intent.getStringExtra("email").toString()
         //Log.i("Correo es:", email)
@@ -174,10 +199,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 if(documento.id == email){
                     name = documento.getString("name").toString()
                     Log.i("Adentro", "Entramos")
-                    lastName = documento.getString("lastname").toString()
-                    age = documento.get("age").toString().toInt()
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int).toFloat()
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int).toFloat()
+                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
+                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
                     //Falta foto
                     Log.i("nombre", name)
                 }
@@ -196,23 +219,24 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
+    /*
     override fun onStart(){
         super.onStart()
-
+        //resetSteps()
     }
+     */
 
     override fun onResume() {
         super.onResume()
 
-        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        //stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
 
         //Creo variables para recibir lo de la base
-        var name: String = ""
-        var lastName: String = ""
-        var age: Int = 0
-        var walk: Float = 0.0F
+        var name = ""
+        var walk = 0
+        var target = 0
         //Actualizar información con lo que viene de la base
         email = intent.getStringExtra("email").toString()
         //Log.i("Correo es:", email)
@@ -221,10 +245,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 if(documento.id == email){
                     name = documento.getString("name").toString()
                     Log.i("Adentro", "Entramos")
-                    lastName = documento.getString("lastname").toString()
-                    age = documento.get("age").toString().toInt()
-                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int).toFloat()
-                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int).toFloat()
+                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
+                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
                     //Falta foto
                     Log.i("nombre", name)
                 }
@@ -252,11 +274,66 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
      */
 
     override fun onSensorChanged(event: SensorEvent?) {
+
         //Número de pasos contados
-        steps = event!!.values[0]
+        //steps = event!!.values[0]
+        var s = (event?.values?.get(0) ?: return)
+        var steps = s.toInt()
+
+        var walk = 0
+        var target = 0
+        //var target = 0.0F
+
         //val change = steps.toString()
+
+        //Obtener datos de la base
+        database.collection("users").get().addOnSuccessListener {
+            for(documento in it){
+                if(documento.id == email){
+                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int)
+                    target = ((documento.getLong("target")?.toInt() ?: Int) as Int)
+                }
+            }
+            //nueva cantidad de pasos
+            val currentSteps = UserDataManager.steps
+            val newWalk = currentSteps + steps
+            //Actualizar número de pasos
+            UserDataManager.steps = newWalk
+
+            //Actualizar base
+            val newData = hashMapOf("walk" to newWalk)
+            database.collection("users").document(email).set(newData, SetOptions.merge()).addOnSuccessListener{
+                //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
+            }
+                .addOnFailureListener{
+                    //Toast.makeText(applicationContext, "Error al actualizar la información", Toast.LENGTH_SHORT).show()
+                }
+            //Actualizar info en pantalla
+            binding.textPaso.setText("$newWalk pasos completados")
+            var falta = target - newWalk
+            binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
+        }
+
+
+        /*
+        //Número de pasos contados
+        //steps = event!!.values[0]
+        Log.i("valor", event!!.values[0].toString())
+        //var walk = 0.0F
+        //val change = steps.toString()
+        //Traer dato actual de la base
+        database.collection("users").get().addOnSuccessListener{
+            for(documento in it){
+                if(documento.id == email){
+                    //Obtengo el dato de pasos actuales
+                    walk = ((documento.getLong("walk")?.toInt() ?: Int) as Int).toFloat()
+                }
+            }
+        }
+        //Contar nuevos pasos
+        var newWalk = walk + steps
         //Actualizar base
-        val newData = hashMapOf("walk" to steps)
+        val newData = hashMapOf("walk" to newWalk)
         database.collection("users").document(email).set(newData, SetOptions.merge()).addOnSuccessListener{
             //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
         }
@@ -265,9 +342,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         //Actualizar info en pantalla
         binding.textPaso.setText("$steps pasos completados")
-        var falta = target - steps
+        //var falta = target - steps
         binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
+         */
     }
+
+    /*
+    fun resetSteps() {
+        steps = 0.0F
+    }
+     */
+
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         //Nada

@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.example.sureoutdoorapp.databinding.LoginBinding
 import com.google.firebase.auth.FirebaseAuth
+//import com.example.sureoutdoorapp.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -43,7 +44,11 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.emailLogin.text.toString(), binding.passwordLogin.text.toString())
                     .addOnCompleteListener{
                         if(it.isSuccessful){
+                            //Resetear pasos
+                            //resetSteps()
                             //Información correcta, se carga la pantalla principal
+                            //val MainActivity = MainActivity.resetSteps()
+                            UserDataManager.steps = 0
                             val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("email", binding.emailLogin.text.toString())
                             startActivity(intent)
