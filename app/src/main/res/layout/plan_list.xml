@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/nom_plan"
+        android:layout_width="124dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/lug_plan"
+        android:layout_width="124dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/fecha_plan"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/time_plan"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

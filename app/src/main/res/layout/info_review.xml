@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/up_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <TextView
+        android:id="@+id/name_company"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="italic|bold"/>
+
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="70dp"
+        android:layout_height="54dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/return_description"
+        app:srcCompat="@mipmap/ic_getout_foreground" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="59dp"
+        android:layout_height="53dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:background="@color/orange"
+        android:contentDescription="@string/setting_description"
+        app:srcCompat="@mipmap/ic_settings_foreground" />
+
+    <ImageView
+        android:id="@+id/imageReference"
+        android:layout_width="179dp"
+        android:layout_height="199dp"
+        android:layout_below="@+id/up_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/textRef"
+        tools:ignore="ImageContrastCheck"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/name_site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginTop="20dp"
+        android:text="Nombre del sitio: "
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/calif_site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginTop="80dp"
+        android:text="Calificación general: "
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/resen_site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageReference"
+        android:layout_marginTop="140dp"
+        android:text="Reseñas "
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp" />
+
+    <ListView
+        android:id="@+id/listRe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/resen_site"
+        android:layout_alignParentBottom="true"
+        tools:listitem="@layout/general_reviews"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="212dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="286dp"
+        android:layout_marginEnd="21dp"
+        android:layout_toEndOf="@+id/name_site"
+        android:text="" />
+
+    <RatingBar
+        android:id="@+id/ratingBarGen"
+        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="336dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/calif_site"
+        android:clickable="false"
+        android:gravity="center|right"
+        android:numStars="5" />
+
+
+</RelativeLayout>
