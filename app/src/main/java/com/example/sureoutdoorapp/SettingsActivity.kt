@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+//import com.example.sureoutdoorapp.SharedData.email
 import com.example.sureoutdoorapp.databinding.SettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -22,6 +23,10 @@ class SettingsActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        //Mostrar la información que viene de la base
+        var email = intent.getStringExtra("email").toString()
+
+
 
         //Cargar la imagen
         val imageBitmap = SharedData.image
@@ -31,7 +36,7 @@ class SettingsActivity : AppCompatActivity() {
         //Cargar la nueva información
         val name = SharedData.name
         val lastName = SharedData.lastName
-        val email = SharedData.email
+        //val email = SharedData.email
         val age = SharedData.age
         binding.nameEj.setText(name)
         binding.lastNameEj.setText(lastName)

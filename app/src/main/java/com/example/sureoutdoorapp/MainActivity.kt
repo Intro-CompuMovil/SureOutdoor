@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         //Botón para ir a la configuración del perfil
         binding.settingsButton.setOnClickListener{
             val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 

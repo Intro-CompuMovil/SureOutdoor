@@ -110,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
     }
     private fun isPasswordValid (password: String): Boolean{
         var tam = password.length
-        if(tam != 8){
+        if(tam < 8){
             binding.passwordPerson.error = "Debe tener mínimo 8 caracteres"
             return false
         }
