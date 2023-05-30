@@ -68,14 +68,24 @@
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
         android:text="@string/email"/>
+
     <TextView
         android:id="@+id/age_person"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_person"
         android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:text="@string/age"/>
+        android:text="@string/age"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/target_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_person"
+        android:layout_marginTop="76dp"
+        android:text="Meta:"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/name_ej"
@@ -85,6 +95,7 @@
         android:layout_marginStart="80dp"
         android:text="@string/nom_prueba"
         android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/last_name_ej"
         android:layout_width="wrap_content"
@@ -92,8 +103,9 @@
         android:layout_below="@+id/name_ej"
         android:layout_marginStart="80dp"
         android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:text="@string/apellido_prueba" />
+        android:text="@string/apellido_prueba"
+        android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/email_ej"
         android:layout_width="wrap_content"
@@ -101,8 +113,9 @@
         android:layout_below="@+id/last_name_ej"
         android:layout_marginStart="130dp"
         android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:text="@string/correo_prueba" />
+        android:text="@string/correo_prueba"
+        android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/age_ej"
         android:layout_width="wrap_content"
@@ -110,16 +123,27 @@
         android:layout_below="@+id/last_name_ej"
         android:layout_marginStart="60dp"
         android:layout_marginTop="80dp"
-        android:textColor="@color/black"
-        android:text="@string/edad_prueba" />
+        android:text="@string/edad_prueba"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/target_ej"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/last_name_ej"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="125dp"
+        android:text="2000"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/person_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="242dp"
+        android:layout_marginEnd="143dp"
         android:text="@string/edit_profile"
         android:theme="@style/ThemeOverlay.Material3.DynamicColors.Light" />
 

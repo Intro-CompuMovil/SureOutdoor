@@ -20,16 +20,23 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.sureoutdoorapp.databinding.NewProfileBinding
 import com.google.android.material.shadow.ShadowRenderer
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.InputStream
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import java.io.*
+
 //import com.example.sureoutdoorapp.data
 
 class NewProfileActivity : AppCompatActivity() {
+
+    lateinit var database: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+
     //@SuppressLint("WrongViewCast")
     companion object {
         private const val GALLERY_REQUEST_CODE = 1
@@ -47,8 +54,52 @@ class NewProfileActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        //Recibe el correo del usuario actual
+        //Inicializar Firebase
+        FirebaseApp.initializeApp(this)
+
+        //Inicializa la base
+        database = FirebaseFirestore.getInstance()
+
+        //Inicializa la autenticación
+        auth = FirebaseAuth.getInstance()
+
+        //Mostrar la información que viene de la base
         var email = intent.getStringExtra("email").toString()
+
+        //Inicializar el Storage
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference.child("users/$email/images/$email.jpg")
+
+        var name = ""
+        var lastName = ""
+        var age = 0
+        var target = 0
+        var walked = 0
+
+        //Poner la información de la base aquí
+        database.collection("users").document(email).get().addOnSuccessListener {
+            name = it.getString("name").toString()
+            lastName = it.getString("lastname").toString()
+            age = ((it.getLong("age")?.toInt() ?: Int) as Int)
+            target = ((it.getLong("target")?.toInt() ?: Int) as Int)
+            walked = ((it.getLong("walk")?.toInt() ?: Int) as Int)
+
+            //Mostrar la información
+            binding.nameEj.setText(name)
+            binding.lastNameEj.setText(lastName)
+            binding.ageEj.setText(age.toString())
+            binding.emailEj.setText(email)
+            binding.newGoal.setText(target.toString())
+        }
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
+            val imageUrl = uri.toString()
+
+            // Cargar la imagen con Glide utilizando la URL
+            Glide.with(this)
+                .load(imageUrl)
+                .into(binding.personImage)
+        }
+
 
         //Botón para cerrar sesión
 
@@ -61,12 +112,30 @@ class NewProfileActivity : AppCompatActivity() {
         //Botón para guardar los cambios
 
         binding.editProfileButton.setOnClickListener{
-            SharedData.name = binding.nameEj.text.toString()
-            SharedData.lastName = binding.lastNameEj.text.toString()
-            SharedData.email = binding.emailEj.text.toString()
-            SharedData.age = binding.ageEj.text.toString()
-
-            Toast.makeText(applicationContext, "Cambios guardados", Toast.LENGTH_LONG).show()
+            if(binding.nameEj.text.isNotEmpty() && binding.lastNameEj.text.isNotEmpty() &&
+                binding.ageEj.text.isNotEmpty() && binding.newGoal.text.isNotEmpty() && binding.emailEj.text.isNotEmpty()){
+                //Verificar correo válido
+                var verif = isEmailValid(binding.emailEj.text.toString())
+                if(verif){
+                    //Se actualiza la información en la base
+                    val data = hashMapOf("name" to binding.nameEj.text.toString(),
+                        "lastname" to binding.lastNameEj.text.toString(),
+                        "age" to binding.ageEj.text.toString().toInt(),
+                        "walk" to walked,
+                        "target" to binding.newGoal.text.toString().toInt(),
+                        "email" to binding.emailEj.text.toString())
+                    database.collection("users").document(binding.emailEj.text.toString()).set(data).addOnSuccessListener {
+                        //Datos actualizados correctamente
+                        Toast.makeText(applicationContext, "Cambios guardados", Toast.LENGTH_LONG).show()
+                    }
+                    //Llamar a Configuración
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    intent.putExtra("email", binding.emailEj.text.toString())
+                    startActivity(intent)
+                }
+            }else{
+                Toast.makeText(applicationContext, "Todos los campos deben estar completos", Toast.LENGTH_LONG).show()
+            }
         }
 
         //Botón para seleccionar la imagen del perfil
@@ -108,6 +177,13 @@ class NewProfileActivity : AppCompatActivity() {
                 builder.show()
 
         }
+    }
+    private fun isEmailValid (email: String ): Boolean{
+        if(!email.contains("@")|| !email.contains(".")){
+            binding.emailEj.error = "Debe ser válido"
+            return false
+        }
+        return true
     }
 
     fun takePicture(){
@@ -189,7 +265,46 @@ class NewProfileActivity : AppCompatActivity() {
             "title",
             "description"
         )
-        SharedData.image = image
+        //SharedData.image = image
         Toast.makeText(this, "Imagen guardada en la galería", Toast.LENGTH_SHORT).show()
+        val storageRef = FirebaseStorage.getInstance().reference
+        val imagesRef = storageRef.child("users/${binding.emailEj.text}/images")
+        val fileName = "${binding.emailEj.text}.jpg"
+        val imageRef = imagesRef.child(fileName)
+
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        val uploadTask = imageRef.putBytes(data)
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                val imageURL = downloadUri.toString()
+                // Guardar la URL de la imagen en la base de datos del usuario, si corresponde
+                saveImageURLToUser(binding.emailEj.text.toString(), imageURL)
+                //SharedData.image = image
+                Toast.makeText(this, "Imagen guardada en Firebase Storage", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al obtener la URL de descarga: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(this, "Error al subir la imagen: ${exception.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun saveImageURLToUser(userId: String, imageURL: String) {
+        //val db = FirebaseFirestore.getInstance()
+        val userRef = database.collection("images").document(userId)
+        val data = hashMapOf(
+            "imageURL" to imageURL
+        )
+        userRef.set(data, SetOptions.merge())
+            .addOnSuccessListener {
+                // La URL de la imagen se ha guardado exitosamente en Firestore
+                Toast.makeText(this, "URL de imagen guardada en Firestore", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                // Ocurrió un error al guardar la URL de la imagen en Firestore
+                Toast.makeText(this, "Error al guardar la URL de la imagen en Firestore: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

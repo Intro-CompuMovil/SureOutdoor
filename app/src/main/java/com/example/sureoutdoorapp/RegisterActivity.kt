@@ -231,11 +231,11 @@ class RegisterActivity : AppCompatActivity() {
             "title",
             "description"
         )
-        SharedData.image = image
+        //SharedData.image = image
         Toast.makeText(this, "Imagen guardada en la galería", Toast.LENGTH_SHORT).show()
         val storageRef = FirebaseStorage.getInstance().reference
         val imagesRef = storageRef.child("users/${binding.personEmail.text}/images")
-        val fileName = "image_${System.currentTimeMillis()}.jpg"
+        val fileName = "${binding.personEmail.text}.jpg"
         val imageRef = imagesRef.child(fileName)
 
         val baos = ByteArrayOutputStream()
@@ -248,7 +248,7 @@ class RegisterActivity : AppCompatActivity() {
                 val imageURL = downloadUri.toString()
                 // Guardar la URL de la imagen en la base de datos del usuario, si corresponde
                 saveImageURLToUser(binding.personEmail.text.toString(), imageURL)
-                SharedData.image = image
+                //SharedData.image = image
                 Toast.makeText(this, "Imagen guardada en Firebase Storage", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al obtener la URL de descarga: ${exception.message}", Toast.LENGTH_SHORT).show()
