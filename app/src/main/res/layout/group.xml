@@ -185,9 +185,9 @@
         android:layout_marginStart="210dp"
         android:layout_marginTop="15dp"
         android:ems="10"
+        android:hint="@string/name_ing"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:text="@string/name_ing"
         android:textSize="20sp" />
 
     <TextView
@@ -208,9 +208,9 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="75dp"
         android:ems="10"
+        android:hint="@string/place_elec"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:text="@string/place_elec"
         android:textSize="20sp" />
 
     <TextView
