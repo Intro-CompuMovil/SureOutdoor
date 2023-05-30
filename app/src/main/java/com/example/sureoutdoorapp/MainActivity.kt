@@ -30,9 +30,12 @@ import com.google.firebase.firestore.SetOptions
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.graphics.Color.RED
+import android.hardware.camera2.params.RggbChannelVector.RED
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.google.type.Color
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -57,13 +60,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         private const val ACTIVITY_REQUEST_CODE = 1
 
-        /*
+
         //Para la notificación
         private const val CHANNEL_ID = "1"
         private const val CHANNEL_NAME = "Canal de meta"
         private const val NOTIFICATION_ID = 1
-        //private const val NOTIFY_CODE = 1
-         */
     }
 
     //Binding de la clase
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         phisicalActivity()
 
         //Inicializar notificaciones
-        //createNotificationChannel()
+        createNotificationChannel()
 
         //Inicializa el sensor
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -166,6 +167,20 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             startActivity(intent)
         }
 
+    }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
+                description = "Lo lograste"
+                enableLights(true)
+                //lightColor = Color.RED
+                enableVibration(true)
+            }
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     override fun onDestroy() {
@@ -258,7 +273,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                         }
                         if(falta == 0 || falta < 0){
                             //Ya lo logró, que establezca un nuevo objetivo
-                            //showNotification()
+                            showNotification()
                             binding.textPlus.setText("Ya no te falta nada, muy buen trabajo")
                         }
                         binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
@@ -267,6 +282,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 }
             }
         }
+    }
+    fun showNotification(){
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_action)
+            .setContentTitle("¡Objetivo de pasos alcanzado!")
+            .setContentText("Felicitaciones, has cumplido con tu objetivo")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        val notificationManagerCompat = NotificationManagerCompat.from(this)
+        notificationManagerCompat.notify(NOTIFICATION_ID, notificationBuilder.build())
+
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
