@@ -17,6 +17,9 @@ class GroupActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        //Recibe el correo del usuario actual
+        var email = intent.getStringExtra("email").toString()
+
         //Botón para cerrar sesión
 
         val returnButton = findViewById<ImageButton>(R.id.returnButton)
@@ -33,6 +36,7 @@ class GroupActivity : AppCompatActivity() {
 
         setButton.setOnClickListener{
             val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 
@@ -42,6 +46,7 @@ class GroupActivity : AppCompatActivity() {
 
         homeButton.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 
@@ -63,12 +68,13 @@ class GroupActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //Botón para ir a los chats
+        //Botón para ir a ver los ejercicios grupales
 
         val chatsButton = findViewById<ImageButton>(R.id.chatsButton)
 
         chatsButton.setOnClickListener{
             val intent = Intent(this, PlansActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 
@@ -78,15 +84,8 @@ class GroupActivity : AppCompatActivity() {
 
         groupButton.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
-        }
-
-        //Botón para solo enviar la convocatoria a mis amigos
-
-        val friendButton = findViewById<Button>(R.id.onlyFriendsButton)
-
-        friendButton.setOnClickListener{
-            Toast.makeText(applicationContext, "Convocatoria compartida a tus amigos", Toast.LENGTH_LONG).show()
         }
 
         //Botón para enviar la convocatoria a la plataforma

@@ -47,6 +47,9 @@ class NewProfileActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        //Recibe el correo del usuario actual
+        var email = intent.getStringExtra("email").toString()
+
         //Botón para cerrar sesión
 
         binding.returnButton.setOnClickListener{

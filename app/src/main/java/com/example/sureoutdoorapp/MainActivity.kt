@@ -27,6 +27,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
     //Base de datos
@@ -35,6 +42,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     //Sensor de pasos
     private var sensorManager: SensorManager? = null
+    private var phoneStepSensor: Sensor? = null
+    private var watchStepSensor: Sensor? = null
     private var walking = false
     private var rein = 0F
 
@@ -47,6 +56,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     companion object {
 
         private const val ACTIVITY_REQUEST_CODE = 1
+
+        /*
+        //Para la notificación
+        private const val CHANNEL_ID = "1"
+        private const val CHANNEL_NAME = "Canal de meta"
+        private const val NOTIFICATION_ID = 1
+        //private const val NOTIFY_CODE = 1
+         */
     }
 
     //Binding de la clase
@@ -79,8 +96,24 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         //Permiso para el acceso a la actividad física
         phisicalActivity()
 
+        //Inicializar notificaciones
+        //createNotificationChannel()
+
         //Inicializa el sensor
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        // Obtén el sensor de pasos del celular
+        phoneStepSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        // Obtén el sensor de pasos del reloj
+        val watchStepSensors = sensorManager!!.getSensorList(Sensor.TYPE_STEP_COUNTER)
+        for (sensor in watchStepSensors) {
+            if (sensor.isWakeUpSensor) {
+                watchStepSensor = sensor
+                break
+            }
+        }
+
+
 
         //Correo actual
         email = intent.getStringExtra("email").toString()
@@ -122,12 +155,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         //Botón para ir a los planes
         binding.plansButton.setOnClickListener {
             val intent = Intent(this, PlansActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 
         //Botón para programar un ejercicio grupal
         binding.groupButton.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 
@@ -148,8 +183,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             Log.i("Adentro del onResume", "Entramos")
             //Hay un usuario
             walking = true
-            val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
+            phoneStepSensor?.let { sensor ->
+                sensorManager?.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+            }
+
+            watchStepSensor?.let { sensor ->
+                sensorManager?.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+            }
         }
     }
 
@@ -184,35 +224,46 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 walk = ((it.getLong("walk")?.toInt() ?: Int) as Int)
                 Log.i("Valor de pasos", walk.toString())
                 if(walking){
-                    val totalSteps = event?.values?.get(0)?.toInt() ?: 0
-                    Log.i("Total de pasos", totalSteps.toString())
-                    //Nueva cantidad de pasos
-                    //Pasos que vienen de la base
-                    if(contador == 0){
-                        previousSteps = walk
-                        contador = 1
-                    }
-                    val currentSteps = previousSteps + totalSteps - previousSteps
-                    previousSteps = totalSteps
+                    if(event?.sensor == phoneStepSensor || event?.sensor == watchStepSensor){
+                        val totalSteps = event?.values?.get(0)?.toInt() ?: 0
+                        Log.i("Total de pasos", totalSteps.toString())
+                        //Nueva cantidad de pasos
+                        //Pasos que vienen de la base
+                        if(contador == 0){
+                            previousSteps = walk
+                            contador = 1
+                        }
+                        val currentSteps = previousSteps + totalSteps - previousSteps
+                        previousSteps = totalSteps
 
-                    Log.i("Aquí varía el sensor", currentSteps.toString())
-                    //Actualizar base
-                    val newData = hashMapOf("walk" to currentSteps)
-                    database.collection("users").document(email).set(newData, SetOptions.merge())
-                        .addOnSuccessListener {
-                            //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
+                        Log.i("Aquí varía el sensor", currentSteps.toString())
+                        //Actualizar base
+                        val newData = hashMapOf("walk" to currentSteps)
+                        database.collection("users").document(email).set(newData, SetOptions.merge())
+                            .addOnSuccessListener {
+                                //Toast.makeText(applicationContext, "Pasos act", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                //Toast.makeText(applicationContext, "Error al actualizar la información", Toast.LENGTH_SHORT).show()
+                            }
+                        //Actualizar info en pantalla
+                        binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
+                        binding.textPaso.setText("${currentSteps} pasos completados")
+                        var falta = target - currentSteps
+                        Log.i("Faltan tantos", falta.toString())
+                        Log.i("Target", target.toString())
+                        if(falta > 0){
+                            //Todavía falta
+                            binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
                         }
-                        .addOnFailureListener {
-                            //Toast.makeText(applicationContext, "Error al actualizar la información", Toast.LENGTH_SHORT).show()
+                        if(falta == 0 || falta < 0){
+                            //Ya lo logró, que establezca un nuevo objetivo
+                            //showNotification()
+                            binding.textPlus.setText("Ya no te falta nada, muy buen trabajo")
                         }
-                    //Actualizar info en pantalla
-                    binding.infoS.text = "¡Hola $name! Esta es la cantidad de pasos que llevas hoy..."
-                    binding.textPaso.setText("${currentSteps} pasos completados")
-                    var falta = target - currentSteps
-                    Log.i("Faltan tantos", falta.toString())
-                    Log.i("Target", target.toString())
-                    binding.textPlus.setText("Te faltan $falta para completar tu meta, ¡vamos que sí se puede!")
-                    binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
+                        binding.extraData.setText("Tu meta es equivalente a 35 viajes ida y vuelta a la luna, ¿Te gusta el espacio o qué?")
+
+                    }
                 }
             }
         }

@@ -1,9 +1,12 @@
 package com.example.sureoutdoorapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sureoutdoorapp.databinding.InfoReviewBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class InfoReviewActivity:AppCompatActivity() {
@@ -28,6 +31,29 @@ class InfoReviewActivity:AppCompatActivity() {
             binding.name.text= name
             binding.ratingBarGen.rating=cal
         }
+
+        //Recibe el correo del usuario actual
+        var email = intent.getStringExtra("email").toString()
+
+        //Botón cerrar sesión
+        val returnButton = findViewById<ImageButton>(R.id.returnButton)
+
+        returnButton.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        //Botón para ir a la configuración del perfil
+        val setButton = findViewById<ImageButton>(R.id.settingsButton)
+
+        setButton.setOnClickListener{
+            val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
+        }
+
+
         binding.imageReference.setImageResource(R.mipmap.im_exercise)
         var place: String? = String()
         var rating: Float = 0F

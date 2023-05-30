@@ -58,4 +58,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.4.0"
     implementation "com.google.android.gms:play-services-fitness:20.0.0"
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
 }

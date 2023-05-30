@@ -36,6 +36,9 @@ class AddReviewActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         var Greeting: Int =0
 
+        //Recibe el correo del usuario actual
+        var email = intent.getStringExtra("email").toString()
+
         var place: String? = String()
 
         var places= ArrayList<String>()
@@ -56,7 +59,6 @@ class AddReviewActivity : AppCompatActivity() {
 
 
         //Botón cerrar sesión
-
         val returnButton = findViewById<ImageButton>(R.id.returnButton)
 
         returnButton.setOnClickListener{
@@ -70,6 +72,7 @@ class AddReviewActivity : AppCompatActivity() {
 
         setButton.setOnClickListener{
             val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
         //Botón al añadir una reseña

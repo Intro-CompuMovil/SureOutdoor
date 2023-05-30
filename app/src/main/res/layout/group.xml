@@ -261,33 +261,15 @@
         android:textColorHint="#757575" />
 
     <Button
-        android:id="@+id/onlyFriendsButton"
-        android:layout_width="161dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="96dp"
-        android:text="@string/friends_send"
-        android:theme="@style/ThemeOverlay.Material3.DynamicColors.Light" />
-
-    <Button
         android:id="@+id/sendAllButton"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="210dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginBottom="396dp"
         android:text="@string/all_send"
         android:theme="@style/ThemeOverlay.Material3.DynamicColors.Light" />
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapViewCreate"
-        android:layout_width="298dp"
-        android:layout_height="173dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="169dp"
-        tools:ignore="SpeakableTextPresentCheck" />
 
 
 </RelativeLayout>

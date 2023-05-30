@@ -60,6 +60,7 @@ class SettingsActivity : AppCompatActivity() {
 
         changeButton.setOnClickListener{
             val intent = Intent(this, NewProfileActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
 
