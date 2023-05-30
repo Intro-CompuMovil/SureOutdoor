@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/drawable/ic_home_background.xml" value="0.1" />
+        <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/drawable/ic_park_map_background.xml" value="0.2045" />
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/drawable/ic_return_background.xml" value="0.2475" />
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/drawable/ic_settings_background.xml" value="0.1" />
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/layout/plans.xml" value="0.35572916666666665" />
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/layout/register.xml" value="0.31209918768704575" />
         <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/layout/settings.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/frank/StudioProjects/SureOutdoorApp/app/src/main/res/mipmap-anydpi-v26/ic_park_map.xml" value="0.2045" />
       </map>
     </option>
   </component>
