@@ -88,19 +88,6 @@
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/siteName"
-        android:layout_width="224dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageReference"
-        android:layout_marginStart="160dp"
-        android:ems="10"
-        android:hint="@string/sitn"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:minHeight="48dp"
-        android:textColorHint="#757575" />
-
     <TextView
         android:id="@+id/califPlace"
         android:layout_width="wrap_content"
@@ -120,6 +107,33 @@
         android:layout_marginTop="50dp"
         android:text="@string/sendCalif"
         android:theme="@style/Theme.Material3.DynamicColors.Dark" />
+
+    <Spinner
+        android:id="@+id/siteName"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/imageReference"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginEnd="32dp"
+        android:layout_toEndOf="@+id/textName"
+        android:spinnerMode="dropdown"
+        android:visibility="visible" />
+
+    <RatingBar
+        android:id="@+id/ratingB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sendReviewButton"
+        android:layout_below="@+id/infoReview"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@+id/califPlace"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 
 </RelativeLayout>

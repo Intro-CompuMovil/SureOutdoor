@@ -16,9 +16,9 @@
     <TextView
         android:id="@+id/text_image"
         android:layout_width="124dp"
-        android:layout_height="30dp"
-        android:layout_weight="0.7"
+        android:layout_height="44dp"
         android:layout_marginTop="30dp"
+        android:layout_weight="0.7"
         android:gravity="center" />
 
     <TextView
@@ -38,12 +38,14 @@
         android:layout_marginTop="30dp"
         tools:ignore="ImageContrastCheck" />
 
-    <ImageView
+    <RatingBar
         android:id="@+id/calif"
-        android:layout_width="98dp"
-        android:layout_height="64dp"
-        android:gravity="center|right"
+        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        tools:srcCompat="@tools:sample/avatars"
+        android:clickable="false"
+        android:gravity="center|right"
+        android:numStars="5"
         tools:ignore="ImageContrastCheck" />
 </LinearLayout>

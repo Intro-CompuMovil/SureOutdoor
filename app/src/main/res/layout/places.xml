@@ -218,11 +218,16 @@
 
     <RatingBar
         android:id="@+id/ratingFilter"
-        android:layout_width="184dp"
+        android:isIndicator="false"
+        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_below="@+id/up_toolbar"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="41dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="6dp"
+        android:layout_toEndOf="@+id/parkButton"
         android:contentDescription="@string/ratingStars" />
 
     <Button

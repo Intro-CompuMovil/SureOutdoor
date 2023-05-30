@@ -83,11 +83,39 @@
         android:textSize="20sp" />
 
     <ListView
+        android:id="@+id/listRe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/resen_site"
         android:layout_alignParentBottom="true"
         tools:listitem="@layout/general_reviews"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="212dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="286dp"
+        android:layout_marginEnd="21dp"
+        android:layout_toEndOf="@+id/name_site"
+        android:text="" />
+
+    <RatingBar
+        android:id="@+id/ratingBarGen"
+        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="336dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/calif_site"
+        android:clickable="false"
+        android:gravity="center|right"
+        android:numStars="5" />
 
 
 </RelativeLayout>
